@@ -35,8 +35,8 @@ namespace AlbertHeijnProductSearcher.UnitTests
         {
             var suggestions = _searcher.FindProductSuggestionsAsync("banaan").Result;
             var suggestion = suggestions.First();
-            var productInfo = _searcher.GetProductInfo(suggestion);
-            productInfo.Ingredients.Count().ShouldBeEquivalentTo(0);
+            var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
+            productInfo.Ingredients.Should().NotBeNull();
             productInfo.NutritionInformation.Should().BeNull();
         }
 
@@ -45,8 +45,8 @@ namespace AlbertHeijnProductSearcher.UnitTests
         {
             var suggestions = _searcher.FindProductSuggestionsAsync("muesli+aardbei").Result;
             var suggestion = suggestions.First();
-            var productInfo = _searcher.GetProductInfo(suggestion);
-            productInfo.Ingredients.Count().ShouldBeEquivalentTo(7);
+            var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
+//            productInfo.Ingredient.ShouldBeEquivalentTo(7);
             productInfo.NutritionInformation.Should().NotBeNull();
             productInfo.NutritionInformation.Sugar.ShouldBeEquivalentTo(14);
         }
