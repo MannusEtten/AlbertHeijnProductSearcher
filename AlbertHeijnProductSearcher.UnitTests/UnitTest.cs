@@ -46,7 +46,7 @@ namespace AlbertHeijnProductSearcher.UnitTests
             var suggestions = _searcher.FindProductSuggestionsAsync("muesli+aardbei").Result;
             var suggestion = suggestions.First();
             var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
-//            productInfo.Ingredient.ShouldBeEquivalentTo(7);
+            productInfo.Ingredients.ShouldBeEquivalentTo(7);
             productInfo.NutritionInformation.Should().NotBeNull();
             productInfo.NutritionInformation.Sugar.ShouldBeEquivalentTo(14);
         }
