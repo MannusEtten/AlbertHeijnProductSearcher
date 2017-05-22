@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="AlbertHeijnProductSearcher.cs" />
     <Compile Include="IngredientsOverview.cs" />
+    <Compile Include="NutritionDataParser.cs" />
     <Compile Include="NutritionInfoAttribute.cs" />
     <Compile Include="NutritionOverview.cs" />
     <Compile Include="ProductInfo.cs" />
@@ -115,8 +116,11 @@
     <EmbeddedResource Include="Properties\AlbertHeijnProductSearcher.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack">
+      <Version>1.4.9.5</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.2.3</Version>
+      <Version>5.3.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.2</Version>

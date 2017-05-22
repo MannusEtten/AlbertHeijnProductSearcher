@@ -46,7 +46,7 @@ namespace AlbertHeijnProductSearcher
             var nutritionAndIngredientsProductInfoLane = productInfoLanes.Skip(1).First();
             var ingredientsInfo = nutritionAndIngredientsProductInfoLane.SelectToken("_embedded.items[0]._embedded.sections[0]._embedded.content[1].text.body").Value<string>();
             var nutritionInfo = nutritionAndIngredientsProductInfoLane.SelectToken("_embedded.items[1]._embedded.sections[0]._embedded.content[2].text.body").Value<string>();
-            productSuggestion.NutritionInformation = new NutritionOverview(nutritionInfo);
+            productSuggestion.NutritionInformation = new NutritionOverview();
             productSuggestion.Ingredients = new IngredientsOverview(ingredientsInfo);
             return productSuggestion;
         }
