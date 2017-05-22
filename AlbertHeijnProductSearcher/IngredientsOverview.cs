@@ -9,6 +9,32 @@ namespace AlbertHeijnProductSearcher
 
         public IngredientsOverview(string ingredientsAsOneString)
         {
+            var splitOne = ingredientsAsOneString.Split(":".ToCharArray());
+            var splitTwo = splitOne[1].Split(".".ToCharArray());
+            var newList = splitTwo[0];
+            bool isSummary = false;
+            int previousIndex = 0;
+            var result = new List<string>();
+            for(int i = 0; i < newList.Length; i++)
+            {
+                var character = newList[i];
+                if(character.Equals('('))
+                {
+                    isSummary = true;
+                }
+                if (character.Equals(')'))
+                {
+                    isSummary = false;
+                }
+                if (character.Equals(',') && newList[i+1].Equals(' ') && isSummary == false)
+                {
+                    result.Add(newList.Substring(previousIndex +1, i - previousIndex -1).Trim());
+                    previousIndex = i;
+                }
+            }
+            Ingredients = result;
         }
+
+        public IEnumerable<string> Ingredients { get; private set; }
     }
 }

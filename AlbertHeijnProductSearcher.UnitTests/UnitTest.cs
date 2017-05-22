@@ -36,7 +36,7 @@ namespace AlbertHeijnProductSearcher.UnitTests
             var suggestions = _searcher.FindProductSuggestionsAsync("banaan").Result;
             var suggestion = suggestions.First();
             var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
-            productInfo.Ingredients.Should().NotBeNull();
+            productInfo.IngredientsInformation.Ingredients.Count().Should().BeGreaterThan(0);
             productInfo.NutritionInformation.Should().BeNull();
         }
 
@@ -46,7 +46,7 @@ namespace AlbertHeijnProductSearcher.UnitTests
             var suggestions = _searcher.FindProductSuggestionsAsync("muesli+aardbei").Result;
             var suggestion = suggestions.First();
             var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
-            productInfo.Ingredients.ShouldBeEquivalentTo(7);
+            productInfo.IngredientsInformation.Ingredients.Count().ShouldBeEquivalentTo(7);
             productInfo.NutritionInformation.Should().NotBeNull();
             productInfo.NutritionInformation.Sugar.ShouldBeEquivalentTo(14);
         }
@@ -59,6 +59,14 @@ namespace AlbertHeijnProductSearcher.UnitTests
             var parseResult = parser.ParseNutritionData(html);
             parseResult.Sugar.ShouldBeEquivalentTo(25);
             parseResult.Salt.ShouldBeEquivalentTo(0.9);
+        }
+
+        [TestMethod]
+        public void ParseIngredientInfo()
+        {
+            var ingredients = "Ingrediënten: 60 % volkoren graanvlok(haver, tarwe), suiker, 8 % zonnebloemolie, 6 % cornflake met yoghurtsmaak[suiker, maïs, gehard palmpitvet, weipoeder, volle melkpoeder, cacaoboter, gemodificeerd tapiocazetmeel, glucosestroop, zout, maltodextrine, emulgator(sojalecithine, E471), natuurlijke aroma's, plantaardige olie (kokos, palm), gerstemout, zuurteregelaar (citroenzuur), glansmiddel (schellak), geleermiddel (arabische gom), conserveermiddel (E200)], geraspte kokos, glucose-fructosestroop, 1,5% gevriesdroogde aardbei, honing, zout, rijsmiddel (E500), karamelstroop, antioxidant (E306). Allergie-informatie: bevat havergluten, tarwegluten, lactose, melkeiwit, soja, gerstgluten. Gemaakt in een bedrijf waar ook pinda's en noten worden verwerkt.";
+            var info = new IngredientsOverview(ingredients);
+            info.Ingredients.Count().ShouldBeEquivalentTo(15);
         }
     }
 }

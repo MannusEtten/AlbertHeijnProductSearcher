@@ -13,7 +13,7 @@ namespace AlbertHeijnProductSearcher
             set { _description = value.RemoveInvisibleCharacters(); }
         }
         public IEnumerable<dynamic> images { get; set; }
-        public IngredientsOverview Ingredients { get; set; }
+        public IngredientsOverview IngredientsInformation { get; set; }
         public NutritionOverview NutritionInformation { get; set; }
         public string Url { get; internal set; }
         public string Dimensions { get; internal set; }
