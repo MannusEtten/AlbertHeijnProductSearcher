@@ -107,7 +107,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AlbertHeijnProductSearcher.cs" />
+    <Compile Include="Ingredient.cs" />
     <Compile Include="IngredientsOverview.cs" />
+    <Compile Include="IngredientsParser.cs" />
     <Compile Include="NutritionDataParser.cs" />
     <Compile Include="NutritionInfoAttribute.cs" />
     <Compile Include="NutritionOverview.cs" />

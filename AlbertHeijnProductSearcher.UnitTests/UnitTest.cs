@@ -1,20 +1,14 @@
-﻿
-using System;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using System.Linq;
+
 namespace AlbertHeijnProductSearcher.UnitTests
 {
     [TestClass]
     public class UnitTest1
     {
         private AlbertHeijnProductSearcher _searcher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            _searcher = new AlbertHeijnProductSearcher();
-        }
 
         [TestMethod]
         public void FindProductSuggestions_Get_60_Results()
@@ -36,8 +30,8 @@ namespace AlbertHeijnProductSearcher.UnitTests
             var suggestions = _searcher.FindProductSuggestionsAsync("banaan").Result;
             var suggestion = suggestions.First();
             var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
-            productInfo.IngredientsInformation.Ingredients.Count().Should().BeGreaterThan(0);
-            productInfo.NutritionInformation.Should().BeNull();
+            productInfo.IngredientsInformation.Ingredients.Count().ShouldBeEquivalentTo(0);
+            productInfo.NutritionInformation.Salt.ShouldBeEquivalentTo(0);
         }
 
         [TestMethod]
@@ -46,9 +40,18 @@ namespace AlbertHeijnProductSearcher.UnitTests
             var suggestions = _searcher.FindProductSuggestionsAsync("muesli+aardbei").Result;
             var suggestion = suggestions.First();
             var productInfo = _searcher.GetProductInfoAsync(suggestion).Result;
-            productInfo.IngredientsInformation.Ingredients.Count().ShouldBeEquivalentTo(7);
+            productInfo.IngredientsInformation.Ingredients.Count().ShouldBeEquivalentTo(11);
             productInfo.NutritionInformation.Should().NotBeNull();
-            productInfo.NutritionInformation.Sugar.ShouldBeEquivalentTo(14);
+            productInfo.NutritionInformation.Sugar.ShouldBeEquivalentTo(25);
+        }
+
+        [TestMethod]
+        public void ParseIngredientInfo()
+        {
+            var ingredients = "Ingrediënten: 60 % volkoren graanvlok(haver, tarwe), suiker, 8 % zonnebloemolie, 6 % cornflake met yoghurtsmaak[suiker, maïs, gehard palmpitvet, weipoeder, volle melkpoeder, cacaoboter, gemodificeerd tapiocazetmeel, glucosestroop, zout, maltodextrine, emulgator(sojalecithine, E471), natuurlijke aroma's, plantaardige olie (kokos, palm), gerstemout, zuurteregelaar (citroenzuur), glansmiddel (schellak), geleermiddel (arabische gom), conserveermiddel (E200)], geraspte kokos, glucose-fructosestroop, 1,5% gevriesdroogde aardbei, honing, zout, rijsmiddel (E500), karamelstroop, antioxidant (E306). Allergie-informatie: bevat havergluten, tarwegluten, lactose, melkeiwit, soja, gerstgluten. Gemaakt in een bedrijf waar ook pinda's en noten worden verwerkt.";
+            var info = new IngredientsOverview(ingredients);
+            info.Ingredients.Count().ShouldBeEquivalentTo(11);
+            info.Ingredients.ElementAt(3).Ingredients.Count().ShouldBeEquivalentTo(17);
         }
 
         [TestMethod]
@@ -61,12 +64,10 @@ namespace AlbertHeijnProductSearcher.UnitTests
             parseResult.Salt.ShouldBeEquivalentTo(0.9);
         }
 
-        [TestMethod]
-        public void ParseIngredientInfo()
+        [TestInitialize]
+        public void Setup()
         {
-            var ingredients = "Ingrediënten: 60 % volkoren graanvlok(haver, tarwe), suiker, 8 % zonnebloemolie, 6 % cornflake met yoghurtsmaak[suiker, maïs, gehard palmpitvet, weipoeder, volle melkpoeder, cacaoboter, gemodificeerd tapiocazetmeel, glucosestroop, zout, maltodextrine, emulgator(sojalecithine, E471), natuurlijke aroma's, plantaardige olie (kokos, palm), gerstemout, zuurteregelaar (citroenzuur), glansmiddel (schellak), geleermiddel (arabische gom), conserveermiddel (E200)], geraspte kokos, glucose-fructosestroop, 1,5% gevriesdroogde aardbei, honing, zout, rijsmiddel (E500), karamelstroop, antioxidant (E306). Allergie-informatie: bevat havergluten, tarwegluten, lactose, melkeiwit, soja, gerstgluten. Gemaakt in een bedrijf waar ook pinda's en noten worden verwerkt.";
-            var info = new IngredientsOverview(ingredients);
-            info.Ingredients.Count().ShouldBeEquivalentTo(15);
+            _searcher = new AlbertHeijnProductSearcher();
         }
     }
 }
